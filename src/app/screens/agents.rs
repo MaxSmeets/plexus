@@ -1,23 +1,30 @@
 use iced::{
-    widget::{column, container, text},
+    widget::{button, column, container, text},
     Element, Length,
 };
 use crate::app::message::Message;
+use crate::app::page::Page; // Ensure you import Page
 use crate::app::utils::colors::hex;
-use crate::app::utils::styles::AgentsContainer;
+use crate::app::utils::styles::SolidContainer;
 
 pub fn agents_screen() -> Element<'static, Message> {
-    let bg_color = hex("343A40");   // Agents screen background
+    let bg_color = hex("343A40");
     let text_color = hex("F8F9FA");
 
-    let content = text("Agents Dashboard")
-        .size(28)
-        .style(text_color);
+    let content = column![
+        text("Agents Screen").size(32).style(text_color),
+        text("List of agents will be displayed here.").style(text_color),
+        // Button to navigate to the marketplace screen.
+        button("Go to Marketplace")
+            .on_press(Message::NavigateTo(Page::AgentsMarketplace))
+            .padding(10)
+    ]
+    .padding(20)
+    .spacing(10);
 
-    container(column![content])
+    container(content)
         .width(Length::Fill)
         .height(Length::Fill)
-        .padding(20)
-        .style(AgentsContainer(bg_color))
+        .style(SolidContainer(bg_color))
         .into()
 }

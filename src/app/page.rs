@@ -2,5 +2,6 @@
 pub enum Page {
     Home,
     Agents,
+    AgentsMarketplace,
     Settings,
 }
