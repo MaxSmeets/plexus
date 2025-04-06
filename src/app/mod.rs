@@ -1,5 +1,5 @@
 use iced::{
-    executor, Application, Command, Element, Theme,
+    executor, Application, Command, Element, Theme, Length,
     widget::{container, row},
 };
 
@@ -7,11 +7,15 @@ mod message;
 mod page;
 pub mod screens;
 pub mod components;
+pub mod utils;
+
 
 use message::Message;
 use page::Page;
 use screens::{home::home_screen, agents::agents_screen, settings::settings_screen};
 use components::sidebar::Sidebar;
+use crate::app::utils::colors::hex;
+use crate::app::utils::styles::{SidebarContainer};
 
 pub struct PlexusApp {
     pub current_page: Page,
@@ -44,16 +48,21 @@ impl Application for PlexusApp {
     }
 
     fn view(&self) -> Element<Self::Message> {
+        let bg_color = hex("212529");
         let content = match self.current_page {
             Page::Home => home_screen(),
             Page::Agents => agents_screen(),
             Page::Settings => settings_screen(),
         };
-
-        row![
-            Sidebar::new(self.current_page),
-            container(content).width(iced::Length::Fill).padding(20)
-        ]
+    
+        container(
+            row![
+                Sidebar::new(self.current_page),
+                container(content).width(Length::Fill).padding(20).height(Length::Fill).style(SidebarContainer(bg_color)),
+            ]
+        )
+        .height(Length::Fill)
         .into()
     }
+    
 }
